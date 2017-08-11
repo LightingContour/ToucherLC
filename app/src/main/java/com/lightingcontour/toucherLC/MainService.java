@@ -199,7 +199,7 @@ public class MainService extends Service {
                         AnimatorSet set = new AnimatorSet();
                         set.play(confirm2).after(1300);
                         set.start();
-                        Toast.makeText(MainService.this,"连续点击两次以退出",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),"连续点击两次以退出",Toast.LENGTH_SHORT).show();
                     }else
                     {
                         Log.i(TAG,"即将关闭");
@@ -228,20 +228,25 @@ public class MainService extends Service {
             {
                 AnimatorUtil.alphaAnimator(imageButton,0,500);
             }
-            for (ImageButton imageButton:functionbtn)
-            {
-                imageButton.setVisibility(View.GONE);
-            }
-            params.width = dpiToPxInt(50);
-            params.height = dpiToPxInt(50);
-            params.x += dpiToPxInt(50);
-            params.y += dpiToPxInt(50);
-            openbtn.setVisibility(View.INVISIBLE);
-            //防止出现跳跃动画.
-            windowManager.removeView(toucherLayout);
-            windowManager.addView(toucherLayout,params);
-            openbtn.setVisibility(View.VISIBLE);
-            ObjectAnimator.ofFloat(openbtn,"rotation",-180f,0f).setDuration(200).start();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    for (ImageButton imageButton:functionbtn)
+                    {
+                        imageButton.setVisibility(View.GONE);
+                    }
+                    params.width = dpiToPxInt(50);
+                    params.height = dpiToPxInt(50);
+                    params.x += dpiToPxInt(50);
+                    params.y += dpiToPxInt(50);
+                    openbtn.setVisibility(View.INVISIBLE);
+                    //防止出现跳跃动画.
+                    windowManager.removeView(toucherLayout);
+                    windowManager.addView(toucherLayout,params);
+                    openbtn.setVisibility(View.VISIBLE);
+                    ObjectAnimator.ofFloat(openbtn,"rotation",-180f,0f).setDuration(200).start();
+                }
+            },500);
         }else
         {
             params.width = dpiToPxInt(150);
